@@ -1,0 +1,85 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_bg03"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/music_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp" >
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/singleSong_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ImageButton
+            android:id="@+id/music_album"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_launcher"
+            android:layout_weight="0.1" />
+
+
+        <LinearLayout
+            android:id="@+id/music_about_layout"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/music_album"
+            android:orientation="vertical"
+            android:layout_toEndOf="@+id/music_album"
+            android:layout_weight="0.82">
+            <SeekBar
+                android:id="@+id/seek_bar"
+                android:layout_marginTop="6dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                />
+            <RelativeLayout
+                android:id="@+id/music_lrc"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:id="@+id/duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@drawable/text_color_selector"
+                    android:layout_marginLeft="8dp"
+                    android:text="JAY"
+                    android:textSize="16sp"
+                    android:layout_gravity="right" />
+
+                <TextView
+                    android:id="@+id/singer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@drawable/text_color_selector"
+                    android:layout_marginRight="10dp"
+                    android:text="JAY"
+                    android:textSize="10sp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/play_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/playqueue" />
+
+    </LinearLayout>
+
+</RelativeLayout>

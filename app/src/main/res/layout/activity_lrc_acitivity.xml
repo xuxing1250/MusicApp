@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.administrator.musicapp.LrcAcitivity"
+    android:background="@drawable/preview_bg07"
+    >
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        >
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/back"
+            android:layout_weight="1"
+            />
+        <RelativeLayout
+            android:id="@+id/title2"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+
+            >
+            <TextView
+                android:id="@+id/name_songs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="AAAAAAAA"
+                />
+            <TextView
+                android:id="@+id/name_albums"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name_songs"
+                android:text="BBBBBBB"
+                />
+        </RelativeLayout>
+        <Button
+            android:id="@+id/download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下载"
+            android:layout_weight="1"
+
+            />
+        <Button
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分享"
+            android:layout_weight="1"
+
+            />
+        <Button
+            android:id="@+id/collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收藏"
+            android:layout_weight="1"
+
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/lrc_songs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:text="1111111111111111111111111111111111"
+        />
+
+    <LinearLayout
+        android:id="@+id/control_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/control_songs"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <TextView
+            android:id="@+id/current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.05"
+            />
+        <SeekBar
+            android:id="@+id/seek_bar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.00" />
+        <TextView
+            android:id="@+id/duration_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3.02"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:id="@+id/control_songs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+        <Button
+            android:id="@+id/shuffle_music1"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shuffle_none" />
+        <Button
+                android:id="@+id/previous_music1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/previous" />
+
+
+        <Button
+                android:id="@+id/play_music1"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/play" />
+        <Button
+            android:id="@+id/next_music1"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/next" />
+
+        <Button
+            android:id="@+id/list_songs"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/playqueue" />
+        </LinearLayout>
+</RelativeLayout>
