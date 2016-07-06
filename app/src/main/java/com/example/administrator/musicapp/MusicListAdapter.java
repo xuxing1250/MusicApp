@@ -50,8 +50,7 @@ public class MusicListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
-        if(convertView == null)
-        {
+        if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.music_list_item_layout, null);
             viewHolder.albumImage = (ImageView) convertView.findViewById(R.id.albumImage);
@@ -66,7 +65,7 @@ public class MusicListAdapter extends BaseAdapter {
         if(position == pos) {
             viewHolder.albumImage.setImageResource(R.drawable.music3);
         } else {
-            Bitmap bitmap = MediaUtil.getArtwork(context, mp3info.getId(),mp3info.getAlbumId(), true, true);
+            Bitmap bitmap = MediaUtil.getArtwork(context, mp3info.getId(), mp3info.getAlbumId(),true,true);
             if(bitmap == null) {
                 viewHolder.albumImage.setImageResource(R.drawable.music5);
             } else {

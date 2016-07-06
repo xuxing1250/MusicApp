@@ -18,13 +18,16 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".PlayerService"></service>
+        <service android:name=".PlayerService" />
         <!-- <receiver android:name=".PlayerService$Myboradcast"> -->
         <!-- <intent-filter> -->
         <!-- <action android:name="com.exampl.administrator.musicapp.ACTION_MODE"/> -->
         <!-- </intent-filter>> -->
         <!-- </receiver> -->
-        <activity android:name=".LrcAcitivity"></activity>
+        <activity android:name=".LrcAcitivity" />
+        <activity android:name=".Viewpager.ViewPagerActivity" />
+        <activity android:name=".Activity.FirtsActivity"></activity>
+        <activity android:name=".Activity.LocalMusicListActivity"></activity>
     </application>
 
 </manifest>

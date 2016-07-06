@@ -24,4 +24,11 @@
     <string name="dialog_messenge">你确定要退出程序吗？</string>
     <string name="about_title">关于</string>
     <string name="menu_time_txt">定时关闭</string>
+    <string name="listen">听</string>
+    <string name="look">看</string>
+    <string name="sing">唱</string>
+    <string name="text_like">我喜欢</string>
+    <string name="text_list">歌单</string>
+    <string name="text_download">下载</string>
+    <string name="text_recent">最近</string>
 </resources>

@@ -20,5 +20,6 @@ public class AppConstant {
         public static final int PLAY_SINGLE = 2;    //单曲循环
         public static final int PLAY_RANDOM = 3;    //随机播放
 
+        public static final int CLICK_PLAY_MSG =9;
 }
 

@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="5.0dp"
-        android:textColor="@drawable/text_color_selector"
+        android:textColor="#a1a1a1"
         android:text="@string/time" />
     <TextView
         android:id="@+id/music_title"
@@ -32,8 +32,9 @@
         android:layout_toRightOf="@+id/albumImage"
         android:focusable="true"
         android:text="@string/siger"
-        android:textColor="@drawable/text_color_selector"
         android:textSize="18sp"
+        android:textColor="#a1a1a1"
+
         />
     <TextView
         android:id="@+id/music_Artist"
@@ -42,6 +43,6 @@
         android:layout_alignLeft="@+id/music_title"
         android:layout_marginTop="5.0dip"
         android:layout_below="@id/music_title"
-        android:textColor="@drawable/text_color_selector"
-        android:text="@string/artist" />
+
+        android:text="XX" />
 </RelativeLayout>

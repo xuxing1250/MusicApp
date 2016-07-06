@@ -11,40 +11,47 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2016/6/16.
  */
+
+
 public class PlayerService extends Service {
     private MediaPlayer mMediaPlayer=new MediaPlayer();
-    private String path;        //路径
-    private boolean isPause;    //是否暂停
-    private boolean isPlay;     //是否播放
-    private int msg;            //播放信息
-    private int current ;     //当前播放位置
-    private List<Mp3info> mp3infos; //播放列表数组
-    private int state=1 ;             //播放模式   默认顺序播放
-    private Mp3info mp3info;     //当前播放歌曲对象
-    private int seek;           //指向定点位置播放
-    private int currentDuration;    //当前播放位置
-    private int duration;           //当前歌曲长度
-
-    public static final String ACTION_MODE="com.exampl.administrator.musicapp.ACTION_MODE";
+    private String path;                //路径
+    private boolean isPause;            //是否暂停
+    private boolean isPlay;             //是否播放
+    private int msg;                    //播放信息
+    private int current ;               //当前播放位置
+    private List<Mp3info> mp3infos;     //播放列表数组
+    private int state=1 ;               //播放模式   默认顺序播放
+    private Mp3info mp3info;            //当前播放歌曲对象
+    private int seek;                   //指向定点位置播放
+    private int currentDuration;        //当前播放位置
+    private int duration;               //当前歌曲长度
+    private int index = 0;			    //歌词检索值
+    private String lrcPath;             //歌词目录
+    private List<LrcContent> lrcContentList;
+    private static final String ACTION_DURATION_POST = "com.example.administrator.musicapp.ACTION_DURANTION_POST";
+    public static final String ACTION_MODE = "com.exampl.administrator.musicapp.ACTION_MODE";
 
     private Myboradcast myboradcast;
-
-
+    private Timer mTimer ;
+    private LrcTask mTask;
+    private long mPalyTimerDuration =1000;        //TimerTask执行任务时间间隔
 
     public PlayerService() {
     }
-
-
-
 
 
     @Nullable
@@ -59,6 +66,7 @@ public class PlayerService extends Service {
                 if(mMediaPlayer!=null){
                     currentDuration=mMediaPlayer.getCurrentPosition();
                     Intent intent=new Intent();
+                    intent.putExtra("current",current);
                     intent.setAction("com.example.administrator.musicapp.ACTION_DURANTION");
                     intent.putExtra("duration",currentDuration);
                     sendBroadcast(intent);
@@ -72,9 +80,12 @@ public class PlayerService extends Service {
     //    播放完成时自动播放下一首  循环播放
     @Override
     public void onCreate() {
+
         super.onCreate();
-//               动态注册模式切换广播
+    //    动态注册模式切换广播
+
         myboradcast=new Myboradcast();
+
         IntentFilter intentfilter=new IntentFilter();
         intentfilter.addAction(ACTION_MODE);
         registerReceiver(myboradcast, intentfilter);
@@ -86,30 +97,36 @@ public class PlayerService extends Service {
                 switch (state){
                     case AppConstant.PLAY_SINGLE:               //单曲循环
                         mMediaPlayer.start();
+                        sendBroadcast();
                     break;
-                case AppConstant.PLAY_MENU:                 //顺序播放
+                case AppConstant.PLAY_MENU:                     //顺序播放
                     if (current < mp3infos.size()-1) {
                         current++;
                     } else {
                         current = 0;
                     }
-                    Intent broadintent = new Intent();
-                    broadintent.putExtra("current", current);
-                    sendBroadcast(broadintent);
+                    sendBroadcast();
                     path = mp3infos.get(current).getUrl();
                     play(0);
                     break;
                 case AppConstant.PLAY_RANDOM:               //随机播放
-                    current=new Random().nextInt(mp3infos.size() - 1);
-                    Log.d("current", "onCompletion: ");
-                    path=mp3infos.get(current).getUrl();
+                    current = new Random().nextInt(mp3infos.size() - 1);
+                    path = mp3infos.get(current).getUrl();
                     play(0);
+                    sendBroadcast();
                     break;
                 }
             }
         });
 
 
+    }
+    //发送广播
+    private void  sendBroadcast(){
+        Intent intent = new Intent();
+        intent.putExtra("current", current);
+        intent.setAction(ACTION_DURATION_POST);
+        sendBroadcast(intent);
     }
 
 
@@ -118,27 +135,37 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-
-        if(mMediaPlayer.isPlaying()){
-            stop();
-            Log.d("stop", "stop");
-        }
-
+//        if (mMediaPlayer.isPlaying()){
+//            stop();
+//            Log.d("stop", "stop");
+//        }
         current=intent.getIntExtra("current", 0);
-        Log.d("1", "1");
+        Log.d ("1", "1");
         path=mp3infos.get(current).getUrl();
         msg=intent.getIntExtra("MSG", 0);
         seek=intent.getIntExtra("Seek",-1);
         switch (msg){
+            case AppConstant.CLICK_PLAY_MSG:
+                play(0);
+                break;
             case AppConstant.PLAY_MSG:
-                play(0);                                     //播放
+                if (mMediaPlayer.isPlaying()){
+                    mMediaPlayer.pause();
+                    Log.d("暂停", "运行到了");
+
+                }else {
+                    play(0);                                     //播放
+
+                }
+
                 break;
             case AppConstant.CONTINUE_MSG:
-                resume();                                   //继续播放
+                mMediaPlayer.start();
+//                resume();                                   //继续播放
                 break;
             case AppConstant.PAUSE_MSG:
-                pause();                                    //暂停
+                mMediaPlayer.pause();
+//                pause();                                    //暂停
                 break;
             case AppConstant.STOP_MSG:
                 stop();                                     //停止
@@ -159,18 +186,20 @@ public class PlayerService extends Service {
     }
 
 
-
+    //上一首
     private void privious() {
 //        Intent sendIntent = new Intent(UPDATE_ACTION);
 //        sendIntent.putExtra("current", current);
 //        // 发送广播，将被Activity组件中的BroadcastReceiver接收到
 //        sendBroadcast(sendIntent);
         play(0);
+        Log.d("1", "2");
     }
 //    下一首
     private void next() {
 
         play(0);
+
     }
 
 
@@ -180,8 +209,9 @@ public class PlayerService extends Service {
             mMediaPlayer.reset();           //初始化
             mMediaPlayer.setDataSource(path);
             mMediaPlayer.prepareAsync();         //缓冲
-            mMediaPlayer.setOnPreparedListener(new PreparedListener(currentime));  //注册监听器
+            mMediaPlayer.setOnPreparedListener(new PreparedListener(currentime));  //注册准备完成监听器
             handler.sendEmptyMessage(1);
+//            initLrc();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -228,6 +258,7 @@ public class PlayerService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             state=intent.getIntExtra("MSG",0);
+
 //            switch (state){
 //                case AppConstant.PLAY_SINGLE:               //单曲循环
 //                    mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -263,7 +294,14 @@ public class PlayerService extends Service {
             if (currentTime > 0) { // 如果音乐不是从头播放
                 mMediaPlayer.seekTo(currentTime);
             }
-
+//            歌词同步处理
+            if(mTimer == null){
+                mTimer = new Timer();
+                mTask = new LrcTask();
+                mTimer.scheduleAtFixedRate(mTask, 0, mPalyTimerDuration);
+            }
         }
     }
+
 }
+
